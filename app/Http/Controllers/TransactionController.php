@@ -14,7 +14,12 @@ class TransactionController extends Controller
      */
     public function index($app_id)
     {
+        $stack=array();
         if ($trans = Coproprietaire::find($app_id)->users[0]->transactions){
+            foreach($trans as $t){
+                array_push($stack, $t);
+
+            }
             return response()->json($trans, 200);
             
         }else{
