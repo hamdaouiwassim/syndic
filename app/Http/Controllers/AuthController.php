@@ -104,8 +104,13 @@ class AuthController extends Controller
 
     public function getusers($idapp){
         // 
+        $stack = array();
         if ($trans = Coproprietaire::find($idapp)->users->where('role','USER')){
-            return response()->json($trans, 200);
+            foreach($trans as $t){
+                array_push($stack, $t);
+
+            }
+            return response()->json($stack, 200);
             
         }else{
             return response()->json([], 200);
