@@ -11,6 +11,7 @@ use Auth;
 use Illuminate\Support\Carbon;
 use Validator;
 use Hash;
+use App\Coproprietaire;
 class AuthController extends Controller
 {
     //
@@ -56,30 +57,7 @@ class AuthController extends Controller
         return response()->json(['message'=>'Utilisateur supprimer'], 200);
 
     }
-    // public function Update(Request $request){
-        
-       
-    //     $user = Auth::user();
-    //     $user->name = $request->name ;
-    //     $user->nom = $request->nom ;
-    //     $user->prenom = $request->prenom ;
-    //     $user->adresse = $request->adresse ;
-
-    //     if( $request->file('avatar') ){
-    //         $avatar = $request->file('avatar');
-    //         $newavatarName = uniqid().'.'.$avatar->getClientOriginalExtension();
-    //         //Move Uploaded File
-    //         $destinationPath = 'uploads/avatars/';
-    //         $avatar->move($destinationPath,$newavatarName);
-    //         $user->avatar =   $newavatarName;
-
-    //     }
-    //     $user->update();
-
-
-    //     return response()->json($user, 200);
-
-    // }
+    
     public function passwordChange(Request $request){
 
         Auth::user()->password = Hash::make($request->password);
@@ -87,6 +65,56 @@ class AuthController extends Controller
         return response()->json(Auth::user(), 200);
 
     }
+
+    public function ChangePaiment($iduser){
+
+        $user = User::find($iduser);
+
+        if ( $user->paid ){
+            $user->paid = false;
+         
+        }else{
+            $user->paid = true;
+        }
+        
+        if ( $user->update() ){
+            return response()->json(["message"=>"Modification de paiment"], 200);
+        }else{
+            return response()->json(["message"=>"Impossible de modifier le paiment"], 400);
+        }
+
+    }
+
+    public function Update(Request $request){
+
+        $user = User::find($iduser);
+
+        $user->nom = $request->nom ;
+        $user->prenom = $request->prenom ;
+        $user->telephone = $request->telephone ;
+        
+        if ( $user->update() ){
+            return response()->json(["message"=>"Modification d'utilisateur"], 200);
+        }else{
+            return response()->json(["message"=>"Impossible de modifier l'utilisateur"], 400);
+        }
+
+    }
+
+
+    public function getusers($idapp){
+        // 
+        if ($trans = Coproprietaire::find($idapp)->users->where('role','USER')){
+            return response()->json($trans, 200);
+            
+        }else{
+            return response()->json([], 200);
+        }
+        
+
+    }
+
+    
 
 
 

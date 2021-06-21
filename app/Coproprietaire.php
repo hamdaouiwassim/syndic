@@ -12,7 +12,7 @@ class Coproprietaire extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function admin()
     {
         return $this->belongsTo('App\User', 'admin_id', 'id');
     }

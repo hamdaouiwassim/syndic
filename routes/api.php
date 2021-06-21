@@ -29,4 +29,12 @@ Route::get('coproprietaire/{id}/delete','CoproprietaireController@destroy');
  
 
 
+Route::post('transaction/add','TransactionController@store');
+Route::get('transactions/{appid}','TransactionController@index');
+Route::get('users/{appid}','AuthController@getusers');
+Route::post('transaction/update','TransactionController@update');
+Route::get('transaction/{id}/delete','TransactionController@destroy');
+Route::get('user/{id}/changePaiment','AuthController@ChangePaiment');
+Route::get('user/{id}/update','AuthController@update');
+
 

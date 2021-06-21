@@ -56,6 +56,16 @@ class User extends Authenticatable
         {
             return $this->belongsTo('App\Coproprietaire', 'app_id', 'id');
         }
+
+        /**
+         * Get all of the transactions for the User
+         *
+         * @return \Illuminate\Database\Eloquent\Relations\HasMany
+         */
+        public function transactions()
+        {
+            return $this->hasMany("App\Transaction", 'syndic_id', 'id');
+        }
     
 
 }
