@@ -23,6 +23,7 @@ Route::group(['middleware' => 'auth:api'], function () {
        
 });
 Route::post('coproprietaire/add','CoproprietaireController@store');
+Route::get('admin/{id}/coproprietaires','CoproprietaireController@index');
 //Route::post('coproprietaire/update','CoproprietaireController@update');
 Route::get('coproprietaire/{id}/delete','CoproprietaireController@destroy');
  

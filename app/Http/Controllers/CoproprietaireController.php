@@ -13,9 +13,11 @@ class CoproprietaireController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($idadmin)
     {
         //
+        return response()->json(Coproprietaire::where('admin_id',$idadmin)->get(), 200);
+        
     }
 
     /**
