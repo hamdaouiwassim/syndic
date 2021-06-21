@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('name')->unique();
             $table->enum('role', ['ADMIN', 'SYNDIC','USER']);
             $table->string('nom')->nullable();
+            $table->integer('app_id');
             $table->string('prenom')->nullable();
             $table->string('telephone')->nullable();
             $table->string('email')->unique()->nullable();

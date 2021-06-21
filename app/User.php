@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'role',
     ];
 
     /**
@@ -36,4 +36,26 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    
+        /**
+         * Get all of the coproprietaires for the User
+         *
+         * @return \Illuminate\Database\Eloquent\Relations\HasMany
+         */
+        public function coproprietaires()
+        {
+            return $this->hasMany('App\Coproprietaire', 'admin_id', 'id');
+        }
+        /**
+         * Get the coproprietaire that owns the User
+         *
+         * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+         */
+        public function coproprietaire()
+        {
+            return $this->belongsTo('App\Coproprietaire', 'app_id', 'id');
+        }
+    
+
 }
