@@ -39,3 +39,9 @@ Route::post('user/update','AuthController@update');
 Route::get('user/{id}','AuthController@get');
 
 
+Route::post('event/add','EventController@store');
+Route::get('events/{appid}','EventController@index');
+Route::post('event/update','EventController@update');
+Route::get('event/{id}/delete','EventController@destroy');
+
+
