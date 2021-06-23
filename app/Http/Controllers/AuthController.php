@@ -15,13 +15,13 @@ use App\Coproprietaire;
 class AuthController extends Controller
 {
     //
-    
-    
+
+
 
     public function login(Request $request){
-    
-        
-        
+
+
+
 
        if (!Auth::attempt(['name' => $request->identifiant, 'password' => $request->password]) ){
            return response()->json([
@@ -31,22 +31,22 @@ class AuthController extends Controller
        }
        //$user = $request->user();
        $user = Auth::user();
-    
+
            return response()->json($user , 200);
 
-      
-           
-       
+
+
+
 
     }
 
 
-        
 
 
-    
+
+
     public function destroy($iduser){
-        
+
         foreach( User::find($iduser)->comments as $c ){
             $c->delete();
         }
@@ -57,7 +57,7 @@ class AuthController extends Controller
         return response()->json(['message'=>'Utilisateur supprimer'], 200);
 
     }
-    
+
     public function passwordChange(Request $request){
 
         Auth::user()->password = Hash::make($request->password);
@@ -72,11 +72,11 @@ class AuthController extends Controller
 
         if ( $user->paid ){
             $user->paid = false;
-         
+
         }else{
             $user->paid = true;
         }
-        
+
         if ( $user->update() ){
             return response()->json(["message"=>"Modification de paiment"], 200);
         }else{
@@ -87,12 +87,12 @@ class AuthController extends Controller
 
     public function Update(Request $request){
 
-        $user = User::find($iduser);
+        $user = User::find($request->id);
 
         $user->nom = $request->nom ;
         $user->prenom = $request->prenom ;
         $user->telephone = $request->telephone ;
-        
+
         if ( $user->update() ){
             return response()->json(["message"=>"Modification d'utilisateur"], 200);
         }else{
@@ -101,9 +101,21 @@ class AuthController extends Controller
 
     }
 
+    public function get($id){
+
+        $user = User::find($id);
+
+        if ( $user ){
+            return response()->json([$user], 200);
+        }else{
+            return response()->json(["message"=>"Impossible de recuperer l'utilisateur"], 400);
+        }
+
+    }
+
 
     public function getusers($idapp){
-        // 
+        //
         $stack = array();
         if ($trans = Coproprietaire::find($idapp)->users->where('role','USER')){
             foreach($trans as $t){
@@ -111,15 +123,15 @@ class AuthController extends Controller
 
             }
             return response()->json($stack, 200);
-            
+
         }else{
             return response()->json([], 200);
         }
-        
+
 
     }
 
-    
+
 
 
 

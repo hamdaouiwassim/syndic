@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Coproprietaire;
+use App\Transaction;
 use Illuminate\Http\Request;
 use App\User;
 use Hash;
@@ -17,7 +18,7 @@ class CoproprietaireController extends Controller
     {
         //
         return response()->json(Coproprietaire::where('admin_id',$idadmin)->get(), 200);
-        
+
     }
 
     /**
@@ -65,8 +66,8 @@ class CoproprietaireController extends Controller
                       $user->app_id= $cp->id;
                       $user->password= Hash::make($request->password);
                       $user->save();
-                   
-            
+
+
                     for($i=1;$i<=$request->nb_app;$i++){
 
                       $user = new User();
@@ -75,15 +76,15 @@ class CoproprietaireController extends Controller
                       $user->app_id= $cp->id;
                       $user->password= Hash::make($request->nom."".$i);
                       $user->save();
-                        
-            
+
+
                     }
                     return response()->json(["message" => "Appartement ajoutee avec success" ], 200);
         }
         return response()->json(["message" => "Impossible  d'\ajoutee l'\appatement" ], 400);
-        
 
-     
+
+
 
 
     }
@@ -133,15 +134,21 @@ class CoproprietaireController extends Controller
         //
         if ( Coproprietaire::find($idcoproprietaire)->delete() ){
             $users = User::where('app_id',$idcoproprietaire)->get();
+            $synd = User::where('app_id',$idcoproprietaire)->where('role','SYNDIC')->get();
+            $transactions = Transaction::where('syndic_id',$synd[0]->id)->get();
+            //dd($synd->transactions);
+                foreach($transactions as $t){
+                    $t->delete();
+                }
             foreach($users as $u){
                 $u->delete();
             }
 
             return response()->json(["message" => "Appartement supprimer avec success" ], 200);
-            
+
         }else{
             return response()->json(["message" => "Impossible  d'\supprimer l'\appatement" ], 400);
         }
-        
+
     }
 }
